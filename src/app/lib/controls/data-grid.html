@@ -1,0 +1,72 @@
+<table class="table table-bordered" [ngClass]="{'table-hover': !inSelectionMode, 'table-striped':!inSelectionMode }">
+  <thead>
+    <tr *ngIf="showToolBar"> 
+      <th [attr.colspan]="getColumnsCount()" class="text-xs-center">{{title}}
+        <div class="btn-group" data-toggle="buttons" style="float: right">
+          <label class="btn " [ngClass]="{'btn-default' :!inSelectionMode, 'btn-info' : inSelectionMode}">
+          <input type="checkbox" [(ngModel)]="inSelectionMode" (change)="toggleSelectionMode()"> <i class="fa fa-hand-o-up">   </i>
+          </label>
+          <span [@overlayState]="inSelectionMode ? 'visible' : 'hidden'" [@focus]="inSelectionMode ? 'active' : 'inactive'" style="padding: 10px; float: right">({{selectedRows.Count()}}) Selected.</span>
+          <label class="btn" [ngClass]="{'btn-default' :!inFilterMode, 'btn-info' : inFilterMode}">
+          <input type="checkbox" [(ngModel)]="inFilterMode" (change)="toggleFilterMode()"> <i class="fa fa-filter">   </i>
+          </label>
+        </div>
+        <span [@overlayState]="inFilterMode ? 'visible' : 'hidden'" [@focus]="inFilterMode ? 'active' : 'inactive'" style="padding: 10px; float: right">({{coreItemsSource?.length}}) filtered.</span>
+      </th>
+    </tr>
+    <tr>
+      <th *ngIf="inSelectionMode" class="border-lf-info" style="width: 15px;" (click)="selectAll()" [ngClass]="{'btn-default' :!allItemsSelected, 'btn-info' : allItemsSelected}">
+        <i class="fa fa-hand-o-up">   </i>
+
+      </th>
+       <th *ngIf="inExpandMode" (click)="toggleRow(rowData)"></th>
+      <th>N.</th>
+      <th *ngFor="let col of columns">
+        <div class="row">
+          <div class="col-md-12">
+            {{col.header}}
+
+          </div>
+        </div>
+
+      </th>
+    </tr>
+    <tr *ngIf="inFilterMode">
+      <th *ngIf="inSelectionMode" class="border-lf-info" style="width: 15px;" (click)="selectAll()" [ngClass]="{'btn-default' :!allItemsSelected, 'btn-info' : allItemsSelected}">
+      </th>
+      <th></th>
+      <th *ngFor="let col of columns">
+        <div class="row">
+          <div class="col-md-12">
+            <input *ngIf="inFilterMode && col.filterMatchMode " style="font-weight: normal" placeholder="filter by {{col.field}}" class="form-control"
+              type="text" [value]="filters[col.field] ? filters[col.field].value : ''" (keyup)="onFilterKeyup($event.target.value, col.field, col.filterMatchMode)"
+            />
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <template ngFor let-rowData [ngForOf]="coreItemsSource" let-even="even" let-odd="odd" let-rowIndex="index">
+      <tr #rowElement [ngClass]="{'font-bold': isRowExpanded(rowData)}">
+        <td class="border-lf-info " *ngIf="inSelectionMode" (click)="setSelectedRow(rowData)"><i class="fa" [class.fa-check]="isSelecteddRow(rowData)">   </i></td>
+        <td *ngIf="inExpandMode" (click)="toggleRow(rowData)">
+          <i class="fa" [class.fa-check]="isSelecteddRow(rowData)" [ngClass]="{'fa-chevron-circle-down text-info':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}">   </i></td>
+
+        <td (click)="setSelectedRow(rowData)">{{rowIndex+1}}</td>
+        <td *ngFor="let col of columns" [ngStyle]="col.style" [ngClass]="col.styleClass">
+          <span *ngIf="!col.bodyTemplate">{{resolveFieldData(rowData,col.field)}}</span>
+          <span *ngIf="col.bodyTemplate">
+            <p-columnBodyTemplateLoader [column]="col" [rowData]="rowData" [rowIndex]="rowIndex + first">
+            </p-columnBodyTemplateLoader>
+        </span>
+        </td>
+      </tr>
+      <tr *ngIf="inExpandMode && isRowExpanded(rowData)" >
+        <td [attr.colspan]="getColumnsCount()">
+          <p-rowExpansionLoader [rowData]="rowData" [template]="rowExpansionTemplate"></p-rowExpansionLoader>
+        </td>
+      </tr>
+    </template>
+  </tbody>
+</table>

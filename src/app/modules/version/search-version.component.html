@@ -1,0 +1,47 @@
+<div class="row" style="background-color:#fff">
+  <div class="table-responsive col-md-12">
+    <h5 class="font-bold">Versions</h5>
+    <div class="row">
+      <a [routerLink]="['/version', 0]"><button class="btn btn-sm btn-info content-right">
+                  <span class="icon-plus"></span> Add</button></a>
+    </div>
+    <table id="example" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>Version name</th>
+          <th>Iteration</th>
+          <th>Planned on</th>
+          <th>Scheduled to</th>
+          <th>Started on</th>
+          <th>Finished on</th>
+          <th>Deployed on</th>
+          <th>Project name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of version_list">
+          <td style="vertical-align:middle;">{{item.VersionName}}</td>
+          <td style="vertical-align:middle;">{{item.Iteration}}</td>
+          <td style="vertical-align:middle;">{{item.PlannedOn | date:'shortDate'}}</td>
+          <td style="vertical-align:middle;">{{item.ScheduledTo | date:'shortDate'}}</td>
+          <td style="vertical-align:middle;">{{item.StartedOn | date:'shortDate'}}</td>
+          <td style="vertical-align:middle;">{{item.FinishedOn | date:'shortDate'}}</td>
+          <td style="vertical-align:middle;">{{item.DeployedOn | date:'shortDate'}}</td>
+          <td style="vertical-align:middle;">{{item.ProjectName}}</td>
+          <td>
+            <a [routerLink]="['/version', item.Id]"><button class="btn btn-sm btn-info">Edit</button></a>
+            <a [routerLink]="['/versionitem', item.Id]"><button class="btn btn-sm btn-info">View Items</button></a>
+            <a [routerLink]="['/versionPlan', item.Id]"><button class="btn btn-sm btn-info">
+                            <i class="fa  fa-dot-circle-o icon "></i> Plan</button>
+                            </a>
+                 <a [routerLink]="['/versionPlan', item.Id]"><button class="btn btn-sm btn-info">
+                            <i class="fa fa-sign-out "></i>  Close</button>
+                            </a>
+            <button class="btn btn-sm btn-danger" (click)="DeleteVersion(item.Id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

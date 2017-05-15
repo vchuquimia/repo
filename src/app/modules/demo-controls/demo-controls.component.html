@@ -1,0 +1,167 @@
+<div class="row">
+  <div class="col-lg-12">
+    <button (click)="start()">start</button>
+    <button (click)="start2()">start2</button>
+
+  </div>
+
+</div>
+<div class="row ">
+  <div class="panel wrapper">
+    <div class="col-md-6">
+      Account Service: NG 2.1.0
+      <search-box [searchService]="offeringService" (OnSelectionChanged)="onOfferingSelectionChanged($event)">
+        <template let-item="item"> {{item.Code}} - <b>{{item.Name}}</b></template>
+      </search-box>
+      <br/>
+      <search-box [searchService]="offeringService" [selectedItem]="selectedOffering" [enableLog]="true" (OnSelectionChanged)="onOfferingSelectionChanged($event)"
+        (OnClearedSelectedItem)="onOfferingCleared()">
+        <template let-item="item"> {{item.Code}} - <b>{{item.Name}}</b></template>
+      </search-box>
+      <br/>
+      <combo-box [itemsSource]="arrayOfKeyValues2">
+        <template let-item="item"> {{item.Name}}-<b>{{item.Key}}</b></template>
+      </combo-box>
+      <br/>
+      <button (click)="setSelectedOffering()"> Set Offering    </button>
+
+    </div>
+    <div class="col-md-6">
+      <div class="input-group dropdown">
+        <input type="text" class="form-control">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <span class="input-group-addon"><i class="fa fa-cancel"></i></span>
+
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <br> Test
+    <button (click)="TestMapping()"> Test mapping</button> {{testObj | json}}
+    <canvas baseChart [datasets]="lineChartData2" [labels]="lineChartLabels" [chartType]='"line"'></canvas>
+    <br>
+    <!--<round-progress [current]="current" [max]="max"></round-progress>-->
+  </div>
+</div>
+<!--
+<div class="row ">
+    <div class="panel wrapper">
+        <div class="col-md-6">
+            <form #f="ngForm" (ngSubmit)="onSubmit()">
+                <p>
+                    <label>Code</label>
+                    <input type="text" [(ngModel)]="testOffering.Code" name="code" required>
+                </p>
+                <p>
+                    <label>Name:</label>
+                    <input type="text" [(ngModel)]="testOffering.Name" required name="name">
+                </p>
+                <p>
+                    <button type="submit">Submit</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-5">
+        <button class="btn btn-danger" type="button" (click)="showError()">show error</button>
+        <button class="btn btn-info" type="button" (click)="showInfo()">show info</button>
+        <button class="btn btn-success" type="button" (click)="showSuccess()">show success</button>
+        <button class="btn btn-warning" type="button" (click)="showWarning()">show warning</button>
+    </div>
+    <div class="col-lg-7">
+        <button type="button" class="btn btn-secondary" placement="top" ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top">
+  Popover on top
+</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">new comboBox</div>
+    <div class="col-md-6">
+        <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-primary" id="dropdownMenu1" ngbDropdownToggle>Toggle dropdown</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <button class="dropdown-item">Action - 1</button>
+                <button class="dropdown-item">Another Action</button>
+                <button class="dropdown-item">Something else is here</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-5">
+        <button type="button" class="btn btn-secondary" placement="top" ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top">
+        </button>
+    </div>
+    <div class="col-lg-7">
+        <table id="example" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let is of arrayOfKeyValues2">
+                    <td style="vertical-align:middle;">{{is.Key}}</td>
+                    <td style="vertical-align:middle;">{{is.Name}}</td>
+                    <td>
+                        <template #popContent>Key: <b> {{is.Key}}</b> <br/>Name:<b> {{is.Name}} </b>  <br/></template>
+                        <button type="button" triggers="mouseenter:mouseleave" class="btn btn-secondary" [ngbPopover]="popContent" popoverTitle="Info">
+                            <i class="fa fa-info-circle"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>-->
+
+
+<div class="row">
+  <div class="col-lg-12">
+      excel
+      <spreadsheet [rows]="5" [columns]="5"></spreadsheet>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <!--<parent><child header= "test">hi</child><child header= "test2">there</child></parent>-->
+
+    <data-grid [itemsSource]="ItemsSource" title="Sales by Year">
+      <column header="Vin" [style]="{'text-align':'center'}" [styleClass]="{' border-lf-pbi ': false, 'border-lf-bug ': true, ' border-lf-hotfix ': false}">
+        <template let-col let-data="rowData" pTemplate type="body">
+          <span>{{data[col.field]}}- {{data.lastYearSale}}</span>
+        </template>
+      </column>
+
+      <column field="lastYearSale" header="Year" filterMatchMode="contains"></column>
+      <column field="thisYearSale" header="thisYearSale"></column>
+      <column field="lastYearProfit" header="Color" filterMatchMode="contains"></column>
+
+      <column header="Plan">
+        <template let-col let-data="rowData" pTemplate type="body">
+          <span>{{data[col.field]}}- {{data.lastYearSale}}</span>
+          <a [routerLink]="['/versionPlan', data.lastYearSale]"><button class="btn btn-sm btn-info">
+                                    <i class="fa  fa-dot-circle-o icon "></i> Plan</button>
+                                    </a>
+        </template>
+      </column>
+
+    </data-grid>
+  </div>
+
+</div>

@@ -1,0 +1,33 @@
+<div class="row" style="background-color:#fff">
+    <div class="table-responsive col-md-12">
+        <h5 class="font-bold">Team Members</h5>
+        <div class="row">
+            <a [routerLink]="['/team-member', 0]"><button class="btn btn-sm btn-info content-right">
+                  <span class="icon-plus"></span> Add</button></a>
+        </div>
+        <table id="example" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Team member name</th>
+                    <th>Team member email</th>
+                    <th>Project name</th>
+                    <th>Active</th>   
+                    <th>Actions</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of teamMember_list">
+                    <td style="vertical-align:middle;">{{item.TeamMemberName}}</td>
+                    <td style="vertical-align:middle;">{{item.TeamMemberEmail}}</td>
+                    <td style="vertical-align:middle;">{{item.ProjectName}}</td>
+                    <td style="vertical-align:middle;">{{item.Active}}</td>                    
+                    <td style="vertical-align:middle;">{{item.WorkingRegion}}</td>       
+                    <td>
+                        <a [routerLink]="['/team-member', item.Id]"><button class="btn btn-sm btn-info">Edit</button></a>
+                        <button class="btn btn-sm btn-danger" (click)="DeleteTeamMember(item.Id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

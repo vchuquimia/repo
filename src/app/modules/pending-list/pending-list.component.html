@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <h5 class="font-bold">Pending List</h5>
+        <div class="table-responsive">
+            <table id="example" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>File name</th>
+                        <th>Received on</th>
+                        <th>Created on</th>
+                        <th>Created by</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of pendingList_list; let i = index">
+                        <td>{{item.FileName}}</td>
+                        <td>{{item.ReceivedOn}}</td>
+                        <td>{{item.CreatedOn}}</td>
+                        <td>{{item.CreatedBy}}</td>
+                        <td>
+                            <a [routerLink]="['/pending-list-item', item.Id]"><button class="btn btn-sm btn-info">Show details</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

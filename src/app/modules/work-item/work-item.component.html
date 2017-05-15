@@ -1,0 +1,77 @@
+<form #f="ngForm" class="form-horizontal" (keydown.enter)="$event.target.tagName == 'TEXTAREA'">
+  <div class=" form-group row">
+    <label class="col-md-1 form-control-label font-bold">ID</label>
+    <div class="col-md-1">{{workItem.Id}}</div>
+    <label class="col-lg-2 form-control-label font-bold">Title: </label>
+    <div class="col-md-8">{{workItem.Title}}</div>
+  </div>
+  <div class=" form-group row">
+    <label class="col-md-2 form-control-label font-bold">Iteration:</label>
+    <div class="col-md-10"> {{workItem.Iteration}}</div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-2 form-control-label font-bold">Assigned To: </label>
+    <div class="col-md-4">{{workItem.AssignedTo}}</div>
+    <label class="col-md-2 form-control-label font-bold">Priority:  </label>
+    <div class="col-md-4"> {{workItem.BacklogPriority}}</div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-2 form-control-label font-bold">State: </label>
+    <div class="col-md-4">{{workItem.State}}</div>
+    <label class="col-md-2 form-control-label font-bold">IT:</label>
+    <div class="col-md-4"> {{workItem.IssueTrackId}}</div>
+  </div>
+  <div>
+
+    <ngb-tabset>
+      <ngb-tab>
+        <template ngbTabTitle><i style="padding-left: 5px" class="fa fa-2x fa-paragraph"></i> <b>Description</b></template>
+        <template ngbTabContent>
+          <div class="form-group row">
+            <label class="col-lg-2 form-control-label" for="textName">Description</label>
+            <div class="col-md-10" [innerHTML]="workItem.Description"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-2 form-control-label font-bold">Solution</label>
+            <div class="col-md-10" [innerHTML]="workItem.Solution"></div>
+          </div>
+        </template>
+      </ngb-tab>
+      <ngb-tab>
+        <template ngbTabTitle><i style="padding-left: 5px" class="fa fa-2x fa-link"></i> <b>Work Item Links</b></template>
+        <template ngbTabContent>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <data-grid [itemsSource]="links" title="Links">
+                <column field="LinkType" header="Link Type" filterMatchMode="contains"></column>
+                <column field="Id" header="ID" filterMatchMode="contains">
+                  <template let-col let-data="rowData" pTemplate type="body">
+                    <a src="javascript:void(0)" (click)="wimService.openWorkItem(data)">{{data.WorkItem.Id}}</a>
+                  </template>
+                </column>
+                <column field="WorkItem.Title" header="Title" filterMatchMode="contains"></column>
+                <column field="WorkItem.Type" header="Type"></column>
+                <column field="WorkItem.State" header="State"></column>
+                <column header="Holding Info Created/Modified" [style]="{'text-align':'center'}">
+                  <template let-col let-data="rowData" pTemplate type="body">
+
+                    <div class="progress">
+
+                      <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                        aria-valuemax="100" [style.width.px]="data.WorkItem.TaskPercentWorkComplete">
+
+                      </div>
+                    </div>
+                    {{data.WorkItem.CreatedDate | amTimeAgo}} / {{data.WorkItem.ChangedDate | amTimeAgo}}
+                  </template>
+                </column>
+              </data-grid>
+            </div>
+          </div>
+        </template>
+      </ngb-tab>
+    </ngb-tabset>
+
+  </div>
+
+</form>

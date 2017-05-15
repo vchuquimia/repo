@@ -1,0 +1,57 @@
+<div class="app-header navbar" style="padding: 0;">
+  <div class="pos-rlt box-shadow bg-white-only">
+    <!-- buttons -->
+    <div class="nav navbar-nav hidden-md-down" style="
+    font-size: 17px;">
+      <a href="{{getAppRootAddress()}}" class="navbar-brand text-lt bg-black text-info">
+        <i class="icon aasi-logo fa-2x"></i>
+        <span class="hidden-folded m-l-xs">AASI.net</span>
+      </a>
+      <i class="icon-home fa-fw"></i>
+      <a href="javascript:void(0);" routerLink="/entity" routerLinkActive="active">
+        <!--<span>{{(ss.currentLegalEntity | async)?.Code}} - {{(ss.currentLegalEntity | async)?.Name}} </span>-->
+      </a>
+
+      <ul class="nav navbar-nav float-xs-right" style="margin-top: 19px;margin-right: 7px;">
+        <li class="hidden-xs-down nav-item">
+          <a ui-fullscreen="ui-fullscreen" class="nav-link"></a>
+        </li>
+        <!--<li class="dropdown nav-item" dropdown="dropdown">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <i class="icon-bell fa-fw"></i>
+                        <span class="hidden-lg-down-down-up-inline">Notifications</span>
+                        <span class="tag-pill tag-sm up bg-danger float-xs-right-xs">2</span>
+                    </a>
+                </li>-->
+        <li ngbDropdown class="d-inline-block nav-item">
+          <a href="javascript:void(0)" class="dropdown-toggle clear nav-link" id="dropdownMenu1" ngbDropdownToggle>
+            <span class="thumb-sm avatar float-xs-right m-t-n-sm m-b-n-sm m-l-sm">
+                                  <i class="icon-user" style=" position: relative; top: 10px; border: none;"></i>
+                                   <i class="on md b-white bottom" style="right: initial;"></i>
+                             </span>
+            <span class="hidden-md-down">{{UserName}}</span> <b class="caret"></b>
+          </a>
+          <!-- dropdown -->
+          <ul class="dropdown-menu " aria-labelledby="dropdownMenu1" style="margin-left: auto;">
+            <li class="dropdown-item">
+              <a href="{{getUserInfoAddress()}}" target="_window">Profile</a>
+            </li>
+            <li class="dropdown-divider dropdown-item"></li>
+            <li class="dropdown-item"> <a href="{{getLogOutAddress()}}"> Logout</a>
+            </li>
+          </ul>
+          <!-- / dropdown -->
+        </li>
+      </ul>
+      <div class="nav navbar-nav float-xs-right" style="margin-top: 19px;margin-right: 7px;">
+        <input type="text" name="tfsId" value="" placeholder="TFS Id" [(ngModel)]="workItemId" />
+        <button class="btn btn-secondary" type="button" (click)="createWorkItemComponent()">Go!</button>
+
+      </div>
+    </div>
+    <!-- / buttons -->
+    <!-- nabar right -->
+    <!-- / navbar right -->
+  </div>
+  <!-- / navbar collapse -->
+</div>

@@ -1,0 +1,46 @@
+<div class="container" style="Background-color:White;">
+    <h5>Rejected Item</h5>   
+     <div *ngIf="HasRejectedItem == false"  class="alert alert-danger" role="alert">
+        <strong><a [routerLink]="['/versionitem', version_id]">Go back</a></strong> | 
+        There is not rejected item registered for this <strong>Version item</strong>
+    </div>
+    <form #f="ngForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+        <fieldset>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inDescription">Description</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inDescription" placeholder="Enter a description" class="form-control"
+                        [(ngModel)] = "rejectedItem_item.Description" />
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inRejected">Rejected on</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inRejected" type="date" [(ngModel)]="rejected_on" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inAssigned">Assigned to</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inAssigned" class="form-control" [(ngModel)] = "rejectedItem_item.AssignedTo" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inProject">Solution</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inProject" class="form-control" [(ngModel)] = "rejectedItem_item.Solution" />
+                </div>
+            </div>
+            <hr>
+            <div class="form-group row">
+                <div class="offset-md-6 col-md-4">
+                    <button name="buttonSave" class="btn btn-success" type="submit">{{TextSubmitButton}}<div class="riple-wrapper"></div>
+                    </button>
+                    <button name="buttonCancel" [routerLink]="['/versionitem', version_id]" routerLinkActive="active" class="btn btn-default">Cancel</button>                  
+                </div>      
+            </div>
+        </fieldset>
+    </form>

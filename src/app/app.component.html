@@ -1,3 +1,56 @@
-<h1>
-  {{title}}
-</h1>
+<div class="app" id="app">
+    <!-- navbar -->
+    <aasi-header></aasi-header>
+    <!-- / navbar -->
+
+    <!-- menu -->
+    <side-bar></side-bar>
+    <!-- / menu -->
+
+    <!-- content -->
+    <div id="progressBar" class="app-content">
+        <ng2-slim-loading-bar [color]="blue"></ng2-slim-loading-bar>
+        <!--<simple-notifications ></simple-notifications>-->
+        <p *ngFor="let alert of alertService.alerts">
+            <ngb-alert [type]="alert.AlertType" (close)="alertService.closeAlert(alert)" [dismissible]="true">
+                <b>
+                    {{alert.title}}
+                </b>
+                <br/> {{alert.message}}
+            </ngb-alert>
+        </p>
+        <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside"></a>
+        <div class="app-content-body fade-in-up">
+            <div class="card wrapper container-fluid" style="background-color:#fff;">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+
+    <!-- /content -->
+
+
+    <!-- footer -->
+    <div class="app-footer wrapper b-t bg-light">
+        <span class="pull-right">app.version 
+      <a href ui-scroll-to="app" class="m-l-sm text-muted">
+          <i class="fa fa-long-arrow-up"></i>
+      </a>
+    </span> &copy; 2017 Copyright.
+    </div>
+    <!-- / footer -->
+
+    <!-- <div data-ng-include=" 'tpl/blocks/settings.html' " class="settings panel panel-default">
+  </div>-->
+
+  <template ngbModalContainer></template>
+  <template #content pTemplate>
+    <div class="modal-header"> Work Item
+    </div>
+    <div class="modal-body"> 
+      <dynamic-work-item  [componentData]="wimService.componentData | async" ></dynamic-work-item>
+    </div>
+    <div class="modal-footer"> 
+    </div>
+      
+  </template>

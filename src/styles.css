@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'content/bootstrap.min.css';
+@import 'content/app.css';
+@import 'content/font.css';
+@import 'content/animate.css/animate.css';
+@import 'content/Fonts/font-awesome/css/font-awesome.min.css';
+@import 'content/Fonts/simple-line-icons/css/simple-line-icons.css';
+@import 'content/Fonts/aasi-net-icons/aasi-net-icons.css';

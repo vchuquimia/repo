@@ -1,0 +1,72 @@
+<div class="container" style="Background-color:White;">
+    <h5>Version</h5>    
+    <form #f="ngForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+        <fieldset>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inVersionName">Version name</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inVersionName" placeholder="Enter a name" class="form-control"
+                        [(ngModel)] = "version_item.VersionName" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inProjectName">Project name</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inProjectName" placeholder="Enter a project name" class="form-control" 
+                        [(ngModel)] = "version_item.ProjectName" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inIteration">Iteration</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inIteration" placeholder="Enter a iteration" class="form-control" 
+                        [(ngModel)] = "version_item.Iteration" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inPlannedOn">Planned on</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inPlannedOn" type="date" [(ngModel)]="planned_on" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inScheduledTo">Scheduled to</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inScheduledTo" type="date" [(ngModel)]="scheduled_on" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inStardedOn">Starded on</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inStardedOn" type="date" [(ngModel)]="started_on" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inFinishedOn">Finished on</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inFinishedOn" type="date" [(ngModel)]="finished_on" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label text-right" for="inDeployedOn">Deployed on</label>  
+                <div class="col-md-4">
+                    <input class="form-control" name="inDeployedOn" type="date" [(ngModel)]="deployed_on" />
+                </div>
+            </div>
+            <hr>
+            <div class="form-group row">
+                <div class="offset-md-6 col-md-4">
+                    <button name="buttonSave" class="btn btn-success" type="submit">{{TextSubmitButton}}<div class="riple-wrapper"></div>
+                    </button>
+                    <button name="buttonCancel" [routerLink]="['/search-version']" routerLinkActive="active" class="btn btn-default">Cancel</button>                  
+                </div>      
+            </div>
+        </fieldset>
+    </form>

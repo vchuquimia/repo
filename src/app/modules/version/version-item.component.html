@@ -1,0 +1,188 @@
+<div class="row">
+  <div class="col-lg-2">
+    <strong> Version :</strong> {{version?.VersionName}}
+    <br>
+    <strong> Iteration :</strong> {{version?.Iteration}}
+  </div>
+  <div class="col-lg-6 ">
+    <div class="row" style="color: white">
+      <div class="col-lg-4 text-xs-center bg-pbi">
+        New Features:
+        <br> <b><h4> {{newFeatures}}</h4> </b>
+      </div>
+      <div class="col-lg-4 text-xs-center bg-bug">
+        Bug Fixes:
+        <br>
+        <b> <h4>
+         {{bugFixes}}
+         </h4> 
+          </b>
+      </div>
+      <div class="col-lg-4 text-xs-center bg-hotfix">
+        Hot Fixes:
+        <br>
+        <b> <h4>{{hotFixes}}</h4> </b>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-xs-center">
+          Total:
+          <br>
+          <b><h4> {{items?.length}}</h4> </b>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <button type="button" class="btn btn-default" value="show" (click)="LoadVersionItems(version.Id)"><i class="fa fa-refresh"></i><br> Refresh</button>
+    <button type="button" class="btn btn-default" value="show" (click)="GetTFSItems()"><i class="fa fa-cloud-download"></i><br> Get TFS Items</button>
+    <button type="button" class="btn btn-default" value="show" (click)="create()"><i class="fa fa-download"></i><br> Create</button>
+  </div>
+</div>
+<ngb-tabset>
+  <ngb-tab>
+    <template ngbTabTitle><i style="padding-left: 15px" class="fa fa-2x fa-eye"></i> <b>Version Overview</b> ({{items?.length}}) + ({{missingItems?.length}})
+      = ({{items?.length + missingItems?.length}})</template>
+    <template ngbTabContent>
+      <div class="row">
+        <div class="col-md-12">
+          <data-grid [itemsSource]="missingItems" title="Missing in current version">
+            <column header="Type" [style]="{'text-align':'center'}" [styleClass]="{' border-lf-pbi ': false, 'border-lf-bug ': true, ' border-lf-hotfix ': false}">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <i class="fa" [ngClass]="{'fa-wrench  color-pbi': isPBI(data), 'fa-bug color-bug': !isPBI(data)}"></i>
+                <i style="padding-left: 15px" class="fa " [ngClass]="{'fa-calendar  color-pbi': isVersionUpdate(data), 'fa-ambulance  color-hotfix': isHotFix(data)}"></i>
+              </template>
+            </column>
+            <column field="Id" header="TFS" filterMatchMode="contains"></column>
+            <column field="IssueTrackId" header="IssueTrackId" filterMatchMode="contains"></column>
+            <column field="Title" header="Title" filterMatchMode="contains"></column>
+            <column field="Type" header="Type"></column>
+            <column field="DeployType" header="DeployType"></column>
+          </data-grid>
+          <data-grid [itemsSource]="items" title="Items in current Version">
+            <column header="Type" [style]="{'text-align':'center'}" [styleClass]="{' border-lf-pbi ': false, 'border-lf-bug ': true, ' border-lf-hotfix ': false}">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <i class="fa" [ngClass]="{'fa-wrench  color-pbi': isPBI(data), 'fa-bug color-bug': !isPBI(data)}"></i>
+                <i style="padding-left: 15px" class="fa " [ngClass]="{'fa-calendar  color-pbi': isVersionUpdate(data), 'fa-ambulance  color-hotfix': isHotFix(data)}"></i>
+              </template>
+            </column>
+            <column field="TfsId" header="TFS" filterMatchMode="contains"></column>
+            <column field="IssueTrackId" header="IssueTrackId" filterMatchMode="contains"></column>
+            <column field="Title" header="Title" filterMatchMode="contains"></column>
+            <column field="Type" header="Type"></column>
+            <column field="DeployType" header="DeployType"></column>
+            <column field="Planned" header="Planned"></column>
+            <column field="Delivered" header="Delivered"></column>
+            <column header="Delete">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <button class="btn btn-sm btn-danger" (click)="DeleteVersionItem(data.Id)">Delete</button>
+              </template>
+            </column>
+          </data-grid>
+        </div>
+      </div>
+    </template>
+  </ngb-tab>
+  <ngb-tab>
+    <template ngbTabTitle><i style="padding-left: 15px" class="fa fa-2x fa-cloud"></i> <b> TFS Items Only</b> ({{tfsItems?.length}}) </template>
+    <template ngbTabContent>
+      <div class="table-responsive col-md-12">
+        <data-grid [itemsSource]="tfsItems" title="Sales by Year">
+          <column header="Type" [style]="{'text-align':'center'}" [styleClass]="{' border-lf-pbi ': false, 'border-lf-bug ': true, ' border-lf-hotfix ': false}">
+            <template let-col let-data="rowData" pTemplate type="body">
+              <i class="fa" [ngClass]="{'fa-wrench  color-pbi': isPBI(data), 'fa-bug color-bug': !isPBI(data)}"></i>
+              <i style="padding-left: 15px" class="fa " [ngClass]="{'fa-calendar  color-pbi': isVersionUpdate(data), 'fa-ambulance  color-hotfix': isHotFix(data)}"></i>
+            </template>
+          </column>
+          <column field="Id" header="TFS" filterMatchMode="contains"></column>
+          <column field="IssueTrackId" header="IssueTrackId" filterMatchMode="contains"></column>
+          <column field="Title" header="Title" filterMatchMode="contains"></column>
+          <column field="Type" header="Type"></column>
+          <column field="DeployType" header="DeployType"></column>
+        </data-grid>
+      </div>
+    </template>
+  </ngb-tab>
+  <ngb-tab>
+    <template ngbTabTitle><i style="padding-left: 15px" class="fa fa-2x fa-cloud-upload"></i> <b> TFS Hirarchical Items Only</b> ({{tfsHierarchyItems?.length}})
+    </template>
+    <template ngbTabContent>
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-secondary" (click)="expandAll()">Expand All</button>
+          <button class="btn btn-secondary" (click)="collapseAll()">Collapse All</button>
+          <label class="i-switch bg-warning pull-right" style="text-align: start;">
+                    Include Finished Items
+                    <input type="checkbox" name="Printable" [(ngModel)]="includeFinishedItems" />
+                        <i></i>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <hr>
+        <label class="col-md-1 col-form-label text-right">Ready to Test :</label>
+        <div class="col-md-1 "> <span class="font-bold text-2x">{{readyToTestCount}}</span></div>
+        <label class="col-md-1 col-form-label text-right ">Being Tested :</label>
+        <div class="col-md-1 "> <span class="font-bold text-2x">{{beingTestedCount}}</span></div>
+        <label class="col-md-1 col-form-label text-right">Ready to Mark as Finished:</label>
+        <div class="col-md-1 "> <span class="font-bold text-2x">{{readyToMarkAsFinishedCount}}</span></div>
+        <label class="col-md-1 col-form-label text-right">In Progress :</label>
+        <div class="col-md-1 "> <span class="font-bold text-2x ">{{inProgressCount}}</span></div>
+        <label class="col-md-1 col-form-label text-right">Total :</label>
+        <div class="col-md-1 "> <span class="font-bold text-2x">{{tfsHierarchyItems?.length}}</span></div>
+      </div>
+      <div class="row">
+
+        <div class="table-responsive col-md-12">
+
+          <data-grid #hierarchyGrid [itemsSource]="tfsHierarchyItems" title="Version Items" [inExpandMode]="true">
+            <column header="Type" [style]="{'text-align':'center'}">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <i class="fa fa-2x" [ngClass]="{'fa-gavel text-info': readyToTest(data),'fa-check text-success':  workCompleted(data), 'fa-flask text-info': beingTested(data)}"></i>
+                <button *ngIf="workCompleted(data)" class="btn btn-success" (click)="openTestWorkItem(data)"> 
+                  <i class="fa fa-flask "></i>
+                </button>
+              </template>
+            </column>
+            <column field="WorkItem.Id" header="TFS" filterMatchMode="contains">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <a src="javascript:void(0)" (click)="wimService.openWorkItem(data.WorkItem)">{{data.WorkItem.Id}}</a>
+              </template>
+            </column>
+            <column field="WorkItem.IssueTrackId" header="IssueTrackId" filterMatchMode="contains"></column>
+            <column field="WorkItem.State" header="State"></column>
+            <column field="WorkItem.Title" header="Title" filterMatchMode="contains"></column>
+            <column field="WorkItem.Type" header="Type"></column>
+            <column field="WorkItem.DeployType" header="DeployType"></column>
+            <column header="Last change Date">
+              <template let-col let-data="rowData" pTemplate type="body">
+                <span>{{data.WorkItem.ChangedDate | amTimeAgo:true}}</span>
+              </template>
+            </column>
+
+            <template let-data pTemplate>
+              <div>
+                <data-grid [showToolBar]="false" [inExpandMode]="false" [itemsSource]="data.Children">
+                  <column field="Id" header="TFS" filterMatchMode="contains">
+                    <template let-col let-data="rowData" pTemplate type="body">
+                      <a (click)="wimService.openWorkItem(data)">{{data.Id}}</a>
+                    </template>
+                  </column>
+                  <column field="State" header="State"></column>
+                  <column field="Title" header="Title" filterMatchMode="contains"></column>
+                  <column field="AssignedTo" header="AssignedTo"></column>
+                  <column field="Type" header="Type"></column>
+                  <column field="Activity" header="Activity"></column>
+                  <column header="Last change Date">
+                    <template let-col let-data="rowData" pTemplate type="body">
+                      <span>{{data.ChangedDate | amTimeAgo:true}}</span>
+                    </template>
+                  </column>
+                </data-grid>
+              </div>
+            </template>
+          </data-grid>
+        </div>
+      </div>
+    </template>
+  </ngb-tab>
+</ngb-tabset>

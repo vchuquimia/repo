@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-md-3">
+    <button type="button" class="btn btn-default" value="Refresh" (click)="LoadItems()"><i class="fa fa-refresh"></i> <br> Refresh</button>
+
+    <i class="fa fa-circle-o-notch fa-2x" [ngClass]="{'fa-spin': WatchMode}"></i> Wach Mode
+    <label class="i-switch bg-info pull-right" style="text-align: left;">
+            <input  type="checkbox" [(ngModel)]="WatchMode" tabindex="0" aria-checked="true" aria-invalid="false"> 
+                            <i></i>
+
+        </label>
+    <br> Updated : {{lastUpdate | amTimeAgo}}
+  </div>
+  <div class="col-md-4">
+    <div class="card-group">
+      <div class="card">
+        <div class="card-header text-xs-center">To Do</div>
+        <div class="card-block font-bold text-2x text-xs-center">
+          {{todoCount}}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header text-xs-center">In Progress</div>
+        <div class="card-block font-bold text-2x text-xs-center">
+          {{inProgressCount}}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header text-xs-center">Total</div>
+        <div class="card-block font-bold text-2x text-xs-center">
+          {{items?.length}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-5">
+    User warnings
+    <br>
+    <div class="col-md-1" *ngFor="let item of  this.warnings">
+      <avatar title="{{item.Type}}" text="{{item.TeamMemberName| userAcronym}}" [styleClass]="{' bg-info ': item.Type == 0,' bg-warning ': item.Type == 1,' bg-danger ': item.Type == 2 ,' bg-dark ': item.Type == 3}"></avatar>
+    </div>
+    <br>
+    <br><i class="fa fa-circle text-dark"></i> With Critical Task Working In Other Task
+    <br><i class="fa fa-circle text-danger"></i> with critical tasks but none inprogress
+    <br><i class="fa fa-circle text-warning"></i> with tasks but none inprogress
+    <br><i class="fa fa-circle text-info"></i> without tasks
+
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ngb-tabset>
+        <ngb-tab>
+          <template ngbTabTitle><i style="padding-left: 5px" class="fa fa-2x fa-globe"></i> <b>Summary</b></template>
+          <template ngbTabContent>
+            <div class="row">
+
+              <div class="col-md-5">
+
+                <div class="card">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item " *ngFor="let item of workSummary" [ngClass]="{'selected-li': item.TeamMember == selectedTeamMember}">
+                      <div class="row">
+                        <div class="col-md-2 ">
+                          <avatar [style]="{'background':'#1ACAC0'}" text="{{item.TeamMember| userAcronym}}"></avatar>
+                        </div>
+                        <div class="col-md-5">
+                          {{item.TeamMember}}
+                        </div>
+                        <div class="col-md-1 font-bold text-2x">
+                          {{item.ItemsCount}}
+                        </div>
+                        <div class="col-md-4 ">
+
+                          <button class="btn btn-secondary" (click)="getWorkInProgressSummary(item.TeamMember)">
+                      <i class="fa fa-arrow-circle-o-right"></i>
+                    </button>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <data-grid [itemsSource]="selectedTeamMemberItems" title="{{selectedTeamMember}} - Work in progress ">
+                  <column header="Info" filterMatchMode="contains">
+                    <template let-col let-data="rowData" pTemplate type="body">
+                      <i title="{{data.BacklogPriority}}" class="fa fa-exclamation-circle  fa-2x" [ngClass]="{'text-gray-dark': data.BacklogPriority < 2000, 'text-danger': data.BacklogPriority >= 9000}"></i>
+                      <i class="fa fa-lock text-danger fa-2x" *ngIf="data.Blocked"></i>
+                    </template>
+                  </column>
+                  <column field="Id" header="ID" filterMatchMode="contains">
+                      <template let-col let-data="rowData" pTemplate type="body">
+                        <a src="javascript:void(0)" (click)="wimService.openWorkItem(data)">{{data.Id}}</a>
+                    </template>
+                  </column>
+                  <column field="Title" header="Title" filterMatchMode="contains"></column>
+                  <column field="Type" header="Type"></column>
+                  <column field="State" header="State"></column>
+                  <column header="Holding Info Created/Modified" [style]="{'text-align':'center'}">
+                    <template let-col let-data="rowData" pTemplate type="body">
+
+                      <div class="progress">
+
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                          aria-valuemax="100" [style.width.px]="data.TaskPercentWorkComplete">
+
+                        </div>
+                      </div>
+                      {{data.CreatedDate | amTimeAgo}} / {{data.ChangedDate | amTimeAgo}}
+                    </template>
+                  </column>
+                </data-grid>
+              </div>
+            </div>
+
+          </template>
+        </ngb-tab>
+
+        <ngb-tab>
+          <template ngbTabTitle><i style="padding-left: 5px" class="fa fa-2x fa-list"></i> <b>List</b></template>
+          <template ngbTabContent>
+
+            <div class="row">
+              <div class="col-md-12">
+                <data-grid [itemsSource]="items" title="Work in progress">
+                  <column field="Id" header="TFS" filterMatchMode="contains"></column>
+                  <column field="Title" header="Title" filterMatchMode="contains"></column>
+                  <column field="Iteration" header="Iteration" filterMatchMode="contains"></column>
+                  <column field="AssignedTo" header="Assigned To" filterMatchMode="contains"></column>
+                  <column field="Type" header="Type"></column>
+                  <column field="State" header="State"></column>
+                  <column header="" [style]="{'text-align':'center'}" [styleClass]="{' border-lf-pbi ': false, 'border-lf-bug ': true, ' border-lf-hotfix ': false}">
+                    <template let-col let-data="rowData" pTemplate type="body">
+                      <span>{{data.CreatedDate | amTimeAgo:true}}</span>
+                    </template>
+                  </column>
+                </data-grid>
+              </div>
+            </div>
+          </template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </div>

@@ -1,0 +1,54 @@
+<div class="container" style="Background-color:White;">
+    <h5>Team Member</h5>    
+    <form #f="ngForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+        <fieldset>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inName">Team member name</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inName" placeholder="Enter a name" class="form-control"
+                        [(ngModel)] = "teamMember_item.TeamMemberName" />
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inEmail">Team member email</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inEmail" placeholder="Enter a name" class="form-control"
+                        [(ngModel)] = "teamMember_item.TeamMemberEmail" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="inProject">Project name</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inProject" placeholder="Enter a name" class="form-control"
+                        [(ngModel)] = "teamMember_item.ProjectName" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-right" for="WorkingRegion">Region</label>  
+                <div class="col-md-4">
+                    <input type="text" name="inWorkingRegion" placeholder="Enter a name" class="form-control"
+                        [(ngModel)] = "teamMember_item.WorkingRegion" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-lg-4">
+                <label class="i-switch bg-warning pull-right" style="text-align: start;">
+                    <input type="checkbox" name="Printable" [(ngModel)]="teamMember_item.Active" (change)="onActiveChange($event)" />
+                        <i></i>
+                </label>
+                </div> Active
+            </div>
+            {{teamMember_item | json}}
+            <hr>
+            <div class="form-group row">
+                <div class="offset-md-6 col-md-4">
+                    <button name="buttonSave" class="btn btn-success" type="submit">{{TextSubmitButton}}<div class="riple-wrapper"></div>
+                    </button>
+                    <button name="buttonCancel" [routerLink]="['/search-team-member']" routerLinkActive="active" class="btn btn-default">Cancel</button>                  
+                </div>      
+            </div>
+        </fieldset>
+    </form>

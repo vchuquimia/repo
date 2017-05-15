@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <h5 class="font-bold">Pending List Items</h5>
+        <div class="alert alert-info" role="alert">
+            <strong><a [routerLink]="['/pending-list']">Go Back</a></strong> | 
+            Showing pending list items for pending list <strong> Nro. {{plId}} </strong>
+        </div>
+        <div class="table-responsive">
+            <table id="example" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Issue track</th>
+                        <th>Priority</th>
+                        <th>Description</th>
+                        <th>Reported on</th>
+                        <th>Issue status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of pendingListItem_list; let i = index">
+                        <td>{{item.IssueTrackId}}</td>
+                        <td>{{item.Priority}}</td>
+                        <td>{{item.Description}}</td>
+                        <td>{{item.ReportedOn}}</td>
+                        <td>{{item.IssueStatus}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
